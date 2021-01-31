@@ -7,7 +7,7 @@ import 'package:location_finder/models/place.dart';
 
 class MapView extends StatefulWidget {
   final LatLng initialLocation;
-  final _isUserMovingMarker = false;
+  //final _isUserMovingMarker = false;
   final LocationMarkedEvent onLocationMarked;
 
   MapView({Key key, this.initialLocation, this.onLocationMarked})
