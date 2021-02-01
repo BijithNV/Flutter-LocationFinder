@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:location_finder/models/place.dart';
 import 'package:location_finder/screens/location_finder.dart';
 
 void main() {
@@ -17,7 +18,11 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: LocationFinder(
-          'AIzaSyA5OUtG44yyg-sHa-zZzur1CxK269jh408',
+          '',
+          onConfirm: (place) {
+            print(
+                'User confirmed location as : ${(place as Place).lat},${(place as Place).lng}');
+          },
         ),
       ),
     );

@@ -11,7 +11,8 @@ import 'package:location_finder/screens/components/place_search.dart';
 
 class LocationFinder extends StatefulWidget {
   final String _googleApiKey;
-  LocationFinder(this._googleApiKey);
+  final ValueChanged onConfirm;
+  LocationFinder(this._googleApiKey, {this.onConfirm});
 
   @override
   _LocationFinderState createState() => _LocationFinderState();
@@ -19,6 +20,7 @@ class LocationFinder extends StatefulWidget {
 
 final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 PersistentBottomSheetController controller;
+Place _selectedPlace;
 
 class _LocationFinderState extends State<LocationFinder>
     with WidgetsBindingObserver {
@@ -68,7 +70,7 @@ class _LocationFinderState extends State<LocationFinder>
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.only(top: 25, left: 10, right: 10),
+                        const EdgeInsets.only(top: 30, left: 10, right: 10),
                     child: PlaceSearch(
                       onPlaceSearchFocus: () {
                         _closeModalBottomSheet();
@@ -81,28 +83,32 @@ class _LocationFinderState extends State<LocationFinder>
   }
 
   void _settingModalBottomSheet(context, Place place) {
+    _selectedPlace = place;
     controller =
-        scaffoldKey.currentState.showBottomSheet<Null>((BuildContext context) {
+        scaffoldKey.currentState.showBottomSheet((BuildContext context) {
       return new Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * .3,
-          child: new Column(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              new Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: new Text(
-                    place.description,
-                    textAlign: TextAlign.left,
-                  )),
-              new Text(
-                'Please Tap on the map to mark precise location',
-                textAlign: TextAlign.left,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Please Tap on the map to mark precise location',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
-              RaisedButton(
-                color: Colors.green[300],
-                onPressed: () {},
-                child: Text('Confirm'),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: RaisedButton(
+                  color: Colors.green[300],
+                  onPressed: () {
+                    widget.onConfirm(_selectedPlace);
+                  },
+                  child: Text('Confirm'),
+                ),
               )
             ],
           ));
